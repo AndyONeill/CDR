@@ -1,8 +1,8 @@
-#Technology Chosen
+##Technology Chosen
 
 I've gone with SQL server and asp.net because these are what I have the most experience in.
 
-#Data Import
+##Data Import
 
 I use bulk insert because this is very fast but easier to work with than BCP when things go wrong.
 There are inevitably issues importing files and it can take a surprising amount of time just to get some data into your database.
@@ -23,11 +23,11 @@ I'd probably want to turn that into ssis and a batch job but that needs more ana
 
 This'll work whilst we arrange those meetings.
 
-#Table Design
+##Table Design
 
 I have an id column because you routinely find you need one if you manipulate data. If I add one on from the start then everything is built ready to deal with an id. Add it on later and any import would likely need revisiting.
 
-#API Design
+##API Design
 
 The spec is very loose and this task is not ready for work.
 
