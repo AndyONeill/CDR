@@ -31,11 +31,25 @@ I have an id column because you routinely find you need one if you manipulate da
 
 The spec is very loose and this task is not ready for work.
 
-Not sure how it got to this stage but we need to arrange a three amigos session with product and find out what they actually need.
+Not sure how it got to this stage but we need to arrange a three amigos session with product and find out what they need before this goes any further.
 
 We can iterate from there.
 
+#ORM
 
+I chose dapper because it's lightweight, simple and closer to the metal than say entity framework.
+
+#Data Manipulation
+
+The spec mentions large files daily which sounds like the real thing will have lots of data.
+BI on large datasets pretty much has to be on the server.  Doing averaging and summing on a web server would rely on selecting low numbers or rows out that dataset. We do not have any clear definition of requirements so we cannot rely on that.
+
+A database orientated app will do any substantial logic in sql on the database.
+
+That means any automated testing has to be higher granularity than you would use for tdd and will rely on a test database.
+I therefore wrote and refined the sql in ssms before adding to the solution.
+
+Next step is to build a test database and I can switch out connection string to ensure the repository returns correct data. 
 
 
 
