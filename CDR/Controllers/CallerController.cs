@@ -1,4 +1,5 @@
-﻿using CDR.Data.models;
+﻿using CDR.Data;
+using CDR.Data.models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Experimental.ProjectCache;
@@ -11,17 +12,19 @@ namespace CDR.Controllers
     {
 
         private readonly ILogger<CallerController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public CallerController(ILogger<CallerController> logger)
+        public CallerController(ILogger<CallerController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpGet("SpentByDay")]
-        public IEnumerable<CallerSpend> Get(DateTime from, DateTime To)
+        public async Task<IEnumerable<CallerSpend>> Get(string callerId, DateTime from, DateTime to)
         {
-            var result = new List<CallerSpend>();
-            result.Add(new CallerSpend{ Day = DateTime.Now, AverageCost = 32.123, NumberCalls=3, TotalCost = 7654.456 });
+            CallRepository repo = new CallRepository(_configuration.GetConnectionString("CDR")??string.Empty);
+            var result = await repo.GetCallerSpends(callerId, from, to);
             return result;
         }
     }

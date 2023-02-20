@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.9" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
 </Project>
