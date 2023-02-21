@@ -29,9 +29,17 @@ namespace CDR.Integration.Tests
         [Fact]
         public async Task GET_Caller_SpentByDay_Call_Success()
         {
+            // Arrange
+            var callerid = "441215598896";
+            var from = new DateTime(2016, 1, 1);
+            var to = new DateTime(2017, 1, 1);
+            var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
+
+            // Act
             using var client = _factory.CreateClient();
-            var exampleCallUrl = spentByDayUrl + "?callerId=441215598896&from=01%2F01%2F2000&to=01%2F01%2F2025";
             var response = await client.GetAsync(exampleCallUrl);
+
+            // Assert
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -39,18 +47,23 @@ namespace CDR.Integration.Tests
         [Fact]
         public async Task GET_Caller_SpentByDay_Specific()
         {
-            using var client = _factory.CreateClient();
-            var exampleCallUrl = spentByDayUrl + "?callerId=441215598896&from=01%2F01%2F2000&to=01%2F01%2F2025";
-            var response = await client.GetAsync(exampleCallUrl);
+            // Arrange
+            var callerid = "441215598896";
+            var from = new DateTime(2016, 1,1);
+            var to = new DateTime(2017, 1, 1);
+            var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
             var expected = new List<CallerSpend>
             {
                 new CallerSpend{ Day = new DateTime(2016, 8,16), AverageCost=1.234, NumberCalls=1, TotalCost=1.234 }
             };
+
+            // Act
+            using var client = _factory.CreateClient();
+            var response = await client.GetAsync(exampleCallUrl);
             var result = await response.Content.ReadFromJsonAsync<List<CallerSpend>>();
+
+            // Assert
             expected.Should().BeEquivalentTo(result);
-            Assert.Equal(expected, result);
-
-
         }
     }
 }
