@@ -24,7 +24,7 @@ namespace CDR.Data
                 from dbo.Calls
                 where    
                 caller_id = @callerId and
-                call_date >= @from and call_date <= @to
+                call_date >= @from and call_date < @to
                 group by call_date",
                         new
                         {

@@ -24,7 +24,7 @@ namespace CDR.Controllers
         public async Task<IEnumerable<CallerSpend>> Get(string callerId, DateTime from, DateTime to)
         {
             CallRepository repo = new CallRepository(_configuration.GetConnectionString("CDR")??string.Empty);
-            var result = await repo.GetCallerSpends(callerId, from, to);
+            var result = await repo.GetCallerSpends(callerId, from, to.AddDays(1));
             return result;
         }
     }

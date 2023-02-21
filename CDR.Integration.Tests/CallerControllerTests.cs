@@ -21,6 +21,7 @@ namespace CDR.Integration.Tests
             {
                 builder.ConfigureAppConfiguration((context, conf) =>
                 {
+                    // substitute test database for real one using test appsettings for connection string
                     conf.AddJsonFile(configPath);
                 });
             });
@@ -49,12 +50,56 @@ namespace CDR.Integration.Tests
         {
             // Arrange
             var callerid = "441215598896";
-            var from = new DateTime(2016, 1,1);
+            var from = new DateTime(2016, 1, 1);
             var to = new DateTime(2017, 1, 1);
             var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
             var expected = new List<CallerSpend>
             {
                 new CallerSpend{ Day = new DateTime(2016, 8,16), AverageCost=1.234, NumberCalls=1, TotalCost=1.234 }
+            };
+
+            // Act
+            using var client = _factory.CreateClient();
+            var response = await client.GetAsync(exampleCallUrl);
+            var result = await response.Content.ReadFromJsonAsync<List<CallerSpend>>();
+
+            // Assert
+            expected.Should().BeEquivalentTo(result);
+        }
+
+        [Fact]
+        public async Task GET_Caller_SpentByDay_Multiple_Rows()
+        {
+            // Arrange
+            var callerid = "442036401149";
+            var from = new DateTime(2016, 1, 1);
+            var to = new DateTime(2017, 1, 1);
+            var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
+            var expected = new List<CallerSpend>
+            {
+                new CallerSpend{ Day = new DateTime(2016, 8,16), AverageCost=0.354666, NumberCalls=3, TotalCost=1.064 },
+                new CallerSpend{ Day = new DateTime(2016, 8,17), AverageCost=0, NumberCalls=1, TotalCost=0 }
+            };
+
+            // Act
+            using var client = _factory.CreateClient();
+            var response = await client.GetAsync(exampleCallUrl);
+            var result = await response.Content.ReadFromJsonAsync<List<CallerSpend>>();
+
+            // Assert
+            expected.Should().BeEquivalentTo(result);
+        }
+        [Fact]
+        public async Task GET_Caller_SpentByDay_Day_Comparison()
+        {
+            // Arrange
+            var callerid = "442036401149";
+            var from = "08%2F16%2F2016";
+            var to = "08%2F16%2F2016";
+            var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
+            var expected = new List<CallerSpend>
+            {
+                new CallerSpend{ Day = new DateTime(2016, 8,16), AverageCost=0.354666, NumberCalls=3, TotalCost=1.064 }
             };
 
             // Act
