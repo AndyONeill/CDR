@@ -8,12 +8,14 @@ This is done using the import.sql script which you can run from ssms.
 
 We can refine this process once things are firmed up and perhaps build an SSIS package and run that from a batch job.
 
-I use bulk insert because this is very fast but easier to work with than BCP when things go wrong.
+I use bulk insert because it's very fast but easier to work with than BCP when things go wrong.
 There are inevitably issues importing files and it can take a surprising amount of time just to get some data into your database.
 
-I chose to use a staging table cdr_import because it avoids the initial complications you get with data import. I can "just" use an import wizard to create the initial table and then iterate from there.
+I chose to use a staging table cdr_import to minimise the initial complications you get with data import. 
+I can "just" use an import wizard to create the initial table and then iterate from there.
 
-Once live a staging table decouples import format from internal structure.
+Once live a staging table is handy because it decouples import format from internal structure.
+When your import job goes mysteriously wrong, you have the data there to look at.
 
 There are often validation and conversion complications.
 EG 
@@ -24,7 +26,9 @@ This'll work whilst we arrange those meetings.
 
 ## Table Design
 
-I have an id column because you routinely find you need one if you manipulate data. If I add one on from the start then everything is built ready to deal with an id. Add it on later and any import would likely need revisiting.
+I have an id column because you routinely find you need one if you manipulate data. 
+If I add one on from the start then everything is built ready to deal with an id. 
+Add it on later and any import would likely need revisiting.
 
 ## API Design
 
@@ -34,6 +38,9 @@ We should arrange a three amigos session with product and find out what they nee
 
 We can iterate from there.
 
+I've done one example endpoint but I don't want to just guess what other requirements there might be.
+I will guess wrong.
+
 ## ORM
 
 I chose dapper because it's lightweight, simple and closer to the metal than say entity framework.
@@ -41,7 +48,7 @@ I chose dapper because it's lightweight, simple and closer to the metal than say
 ## Data Manipulation
 
 The spec mentions large files daily which sounds like the real thing will have lots of data.
-BI on large datasets pretty much has to rely on SQL run on the server.  
+BI on large datasets pretty much has to rely on SQL run on the server.
 Averaging and summing on a web server would rely on selecting low numbers or rows out that dataset. 
 We do not have any clear definition of requirements so I have assumed large numbers of rows might be processed.
 
