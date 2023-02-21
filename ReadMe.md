@@ -85,8 +85,8 @@ Until then, the connection string relies on integrated security.
 
 You will need two databases.
 
-Since the files for these are dependent on your machines, I've not scripted database creation.
-You could easily do that in ssms though.
+Since the files for these are dependent on knowing disk drive and folder location, I've not scripted database creation.
+You can right click database and create new in ssms.
 
 There are scripts to create tables for these in the Database folder of the repo, although you may need to edit them to change file locations.
 
@@ -94,4 +94,4 @@ The first is called CDR.
 That will have two tables - Calls and the staging table ( as described above ) cdr_import.
 
 A second database CDRTest is necessary for the integration tests.
-The script for that creates data in the calls table.
+The script for that creates data in the CDRTest.dbo.Calls table.

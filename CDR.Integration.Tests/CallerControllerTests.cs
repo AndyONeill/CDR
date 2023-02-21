@@ -110,5 +110,24 @@ namespace CDR.Integration.Tests
             // Assert
             expected.Should().BeEquivalentTo(result);
         }
+
+        [Fact]
+        public async Task GET_Caller_SpentByDay_No_Rows()
+        {
+            // Arrange
+            var callerid = "442036401149";
+            var from = new DateTime(2017, 1, 1);
+            var to = new DateTime(2017, 1, 1);
+            var exampleCallUrl = spentByDayUrl + $"?callerId={callerid}&from={from}&to={to}";
+            var expected = new List<CallerSpend>();
+ 
+            // Act
+            using var client = _factory.CreateClient();
+            var response = await client.GetAsync(exampleCallUrl);
+            var result = await response.Content.ReadFromJsonAsync<List<CallerSpend>>();
+
+            // Assert
+            expected.Should().BeEquivalentTo(result);
+        }
     }
 }
