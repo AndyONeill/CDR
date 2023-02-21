@@ -127,6 +127,7 @@ namespace CDR.Integration.Tests
             var result = await response.Content.ReadFromJsonAsync<List<CallerSpend>>();
 
             // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             expected.Should().BeEquivalentTo(result);
         }
     }
